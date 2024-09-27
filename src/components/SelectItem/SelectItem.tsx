@@ -9,6 +9,7 @@ interface Props {
 const SelectItem: React.FC<Props> = ({ defaultValue, menuItems, onChange }) => {
 	return (
 		<Select
+			style={{ height: '56px' }}
 			labelId='demo-simple-select-label'
 			id='demo-simple-select'
 			defaultValue={defaultValue}

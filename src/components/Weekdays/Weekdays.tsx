@@ -28,7 +28,7 @@ const Weekdays = () => {
 	)
 
 	return (
-		<ToggleButtonGroup value={selectedDays} aria-label='text formatting'>
+		<ToggleButtonGroup value={selectedDays} aria-label='text formatting' fullWidth style={{ height: '56px' }}>
 			{Object.keys(dayGroups).map(group => (
 				<ToggleButton
 					key={group}
@@ -36,13 +36,21 @@ const Weekdays = () => {
 					selected={isGroupActive(group)}
 					onClick={() => handleGroupSelection(group as keyof typeof dayGroups)}
 					aria-label={group}
+					color='primary'
 				>
 					{group}
 				</ToggleButton>
 			))}
 
 			{daysOfWeek.map(day => (
-				<ToggleButton key={day} value={day} selected={selectedDays.includes(day)} onClick={() => handleDayToggle(day)} aria-label={day}>
+				<ToggleButton
+					key={day}
+					value={day}
+					selected={selectedDays.includes(day)}
+					onClick={() => handleDayToggle(day)}
+					aria-label={day}
+					color='primary'
+				>
 					{day}
 				</ToggleButton>
 			))}
