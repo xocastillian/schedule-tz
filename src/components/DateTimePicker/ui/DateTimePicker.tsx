@@ -4,7 +4,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Box } from '@mui/material'
 import styles from './DateTimePicker.module.css'
 import { pickerContainer } from './DateTimePicker.mui'
-import { dateTimePickerStore } from '../../stores/DateTimePickerStore'
+import { dateTimePickerStore } from '../../../stores/DateTimePickerStore'
+import { disableFutureDates } from '../utils'
 
 interface DateTimePickerProps {
 	label?: string
@@ -39,12 +40,14 @@ const CustomDateTimePicker: React.FC<DateTimePickerProps> = observer(({ label, s
 							label={label && `${label} (начало)`}
 							value={dateTimePickerStore.startDate}
 							onChange={newValue => dateTimePickerStore.setStartDate(newValue)}
+							shouldDisableDate={disableFutureDates}
 						/>
 						<DatePicker
 							className={styles.picker}
 							label={label && `${label} (конец)`}
 							value={dateTimePickerStore.endDate}
 							onChange={newValue => dateTimePickerStore.setEndDate(newValue)}
+							shouldDisableDate={disableFutureDates}
 						/>
 					</>
 				)}

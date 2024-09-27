@@ -1,4 +1,4 @@
-import { SelectItem } from '../SelectItem/types'
+import { SelectItem } from '../../SelectItem/types'
 
 export const hourTypeSelectItems: SelectItem[] = [
 	{ label: 'Академический час', value: 'academic' },

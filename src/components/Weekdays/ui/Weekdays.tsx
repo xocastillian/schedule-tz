@@ -1,7 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { observer } from 'mobx-react-lite'
-import WeekdaysStore from '../../stores/WeekdaysStore'
-import { dayGroups, daysOfWeek } from './constants'
+import WeekdaysStore from '../../../stores/WeekdaysStore'
+import { dayGroups, daysOfWeek } from '../constants/constants'
 import { toggleContainer } from './Weekdays.mui'
 
 const Weekdays = observer(() => {

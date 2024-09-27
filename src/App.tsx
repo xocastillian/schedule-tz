@@ -1,6 +1,6 @@
 import { Button } from '@mui/material'
 import { useState } from 'react'
-import ScheduleModal from './components/ScheduleModal/ScheduleModal'
+import ScheduleModal from './components/ScheduleModal/ui/ScheduleModal'
 import styles from './App.module.css'
 
 const App = () => {

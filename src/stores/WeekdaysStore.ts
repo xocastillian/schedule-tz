@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { dayGroups } from '../components/Weekdays/constants'
+import { dayGroups } from '../components/Weekdays/constants/constants'
 
 class WeekdaysStore {
 	selectedDays: string[] = []
