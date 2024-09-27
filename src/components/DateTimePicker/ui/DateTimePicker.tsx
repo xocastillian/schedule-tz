@@ -7,12 +7,12 @@ import { pickerContainer } from './DateTimePicker.mui'
 import { dateTimePickerStore } from '../../../stores/DateTimePickerStore'
 import { disableFutureDates } from '../utils'
 
-interface DateTimePickerProps {
+interface Props {
 	label?: string
 	showTime?: boolean
 }
 
-const CustomDateTimePicker: React.FC<DateTimePickerProps> = observer(({ label, showTime = false }) => {
+const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = false }) => {
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Box sx={pickerContainer}>

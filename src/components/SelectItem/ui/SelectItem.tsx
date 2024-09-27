@@ -1,5 +1,6 @@
 import { MenuItem, Select } from '@mui/material'
 import { selectContainer } from './SelectItem.mui'
+import { memo } from 'react'
 
 interface Props {
 	value: string
@@ -7,7 +8,7 @@ interface Props {
 	onChange: (value: string) => void
 }
 
-const SelectItem: React.FC<Props> = ({ value, menuItems, onChange }) => {
+const SelectItem: React.FC<Props> = memo(({ value, menuItems, onChange }) => {
 	return (
 		<Select
 			sx={selectContainer}
@@ -24,6 +25,6 @@ const SelectItem: React.FC<Props> = ({ value, menuItems, onChange }) => {
 			))}
 		</Select>
 	)
-}
+})
 
 export default SelectItem
