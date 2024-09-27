@@ -2,18 +2,18 @@ import { MenuItem, Select } from '@mui/material'
 import { selectContainer } from './SelectItem.mui'
 
 interface Props {
-	defaultValue: string
+	value: string
 	menuItems: { label: string; value: string }[]
 	onChange: (value: string) => void
 }
 
-const SelectItem: React.FC<Props> = ({ defaultValue, menuItems, onChange }) => {
+const SelectItem: React.FC<Props> = ({ value, menuItems, onChange }) => {
 	return (
 		<Select
 			sx={selectContainer}
 			labelId='demo-simple-select-label'
 			id='demo-simple-select'
-			defaultValue={defaultValue}
+			value={value}
 			fullWidth
 			onChange={e => onChange(e.target.value as string)}
 		>

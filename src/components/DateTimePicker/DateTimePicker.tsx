@@ -1,57 +1,56 @@
+import { observer } from 'mobx-react-lite'
 import { LocalizationProvider, TimePicker, DatePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { useState } from 'react'
 import { Box } from '@mui/material'
 import styles from './DateTimePicker.module.css'
 import { pickerContainer } from './DateTimePicker.mui'
+import { dateTimePickerStore } from '../../stores/DateTimePickerStore'
 
 interface DateTimePickerProps {
 	label?: string
 	showTime?: boolean
 }
 
-const CustomDateTimePicker: React.FC<DateTimePickerProps> = ({ label, showTime = false }) => {
-	const [startDate, setStartDate] = useState<Date | null>(null)
-	const [endDate, setEndDate] = useState<Date | null>(null)
-	const [startTime, setStartTime] = useState<Date | null>(null)
-	const [endTime, setEndTime] = useState<Date | null>(null)
-
+const CustomDateTimePicker: React.FC<DateTimePickerProps> = observer(({ label, showTime = false }) => {
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Box sx={pickerContainer}>
 				{showTime ? (
 					<>
-						{/* Выбор диапазона времени */}
 						<TimePicker
 							className={styles.picker}
 							ampm={false}
 							label={label && `${label} (начало)`}
-							value={startTime}
-							onChange={newValue => setStartTime(newValue)}
+							value={dateTimePickerStore.startTime}
+							onChange={newValue => dateTimePickerStore.setStartTime(newValue)}
 						/>
 						<TimePicker
 							className={styles.picker}
 							ampm={false}
 							label={label && `${label} (конец)`}
-							value={endTime}
-							onChange={newValue => setEndTime(newValue)}
+							value={dateTimePickerStore.endTime}
+							onChange={newValue => dateTimePickerStore.setEndTime(newValue)}
 						/>
 					</>
 				) : (
 					<>
-						{/* Выбор диапазона дат */}
 						<DatePicker
 							className={styles.picker}
 							label={label && `${label} (начало)`}
-							value={startDate}
-							onChange={newValue => setStartDate(newValue)}
+							value={dateTimePickerStore.startDate}
+							onChange={newValue => dateTimePickerStore.setStartDate(newValue)}
 						/>
-						<DatePicker className={styles.picker} label={label && `${label} (конец)`} value={endDate} onChange={newValue => setEndDate(newValue)} />
+						<DatePicker
+							className={styles.picker}
+							label={label && `${label} (конец)`}
+							value={dateTimePickerStore.endDate}
+							onChange={newValue => dateTimePickerStore.setEndDate(newValue)}
+						/>
 					</>
 				)}
 			</Box>
 		</LocalizationProvider>
 	)
-}
+})
 
 export default CustomDateTimePicker

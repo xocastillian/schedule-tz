@@ -1,40 +1,25 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { useCallback, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import WeekdaysStore from '../../stores/WeekdaysStore'
 import { dayGroups, daysOfWeek } from './constants'
 import { toggleContainer } from './Weekdays.mui'
 
-const Weekdays = () => {
-	const [selectedDays, setSelectedDays] = useState<string[]>([])
+const Weekdays = observer(() => {
+	const handleGroupSelection = (group: keyof typeof dayGroups) => {
+		WeekdaysStore.handleGroupSelection(group)
+	}
 
-	const handleGroupSelection = useCallback((group: keyof typeof dayGroups) => {
-		setSelectedDays(dayGroups[group])
-	}, [])
-
-	const handleDayToggle = useCallback((day: string) => {
-		setSelectedDays(prev => {
-			const newSelectedDays = [...prev]
-			const index = newSelectedDays.indexOf(day)
-			if (index === -1) {
-				newSelectedDays.push(day)
-			} else {
-				newSelectedDays.splice(index, 1)
-			}
-			return newSelectedDays
-		})
-	}, [])
-
-	const isGroupActive = useCallback(
-		(group: keyof typeof dayGroups) => dayGroups[group].every(day => selectedDays.includes(day)) && selectedDays.length === dayGroups[group].length,
-		[selectedDays]
-	)
+	const handleDayToggle = (day: string) => {
+		WeekdaysStore.handleDayToggle(day)
+	}
 
 	return (
-		<ToggleButtonGroup value={selectedDays} aria-label='text formatting' fullWidth sx={toggleContainer}>
+		<ToggleButtonGroup value={WeekdaysStore.selectedDays} aria-label='text formatting' fullWidth sx={toggleContainer}>
 			{Object.keys(dayGroups).map(group => (
 				<ToggleButton
 					key={group}
 					value={group}
-					selected={isGroupActive(group)}
+					selected={WeekdaysStore.isGroupActive(group as keyof typeof dayGroups)}
 					onClick={() => handleGroupSelection(group as keyof typeof dayGroups)}
 					aria-label={group}
 					color='primary'
@@ -47,7 +32,7 @@ const Weekdays = () => {
 				<ToggleButton
 					key={day}
 					value={day}
-					selected={selectedDays.includes(day)}
+					selected={WeekdaysStore.selectedDays.includes(day)}
 					onClick={() => handleDayToggle(day)}
 					aria-label={day}
 					color='primary'
@@ -57,6 +42,6 @@ const Weekdays = () => {
 			))}
 		</ToggleButtonGroup>
 	)
-}
+})
 
 export default Weekdays
