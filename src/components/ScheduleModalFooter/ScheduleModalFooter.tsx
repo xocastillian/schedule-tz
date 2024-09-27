@@ -1,4 +1,5 @@
 import { Box, Button } from '@mui/material'
+import { footerContainer } from './ScheduleModalFooter.mui'
 
 interface Props {
 	onClose: () => void
@@ -7,7 +8,7 @@ interface Props {
 
 const ScheduleModalFooter: React.FC<Props> = ({ onClose, onAdd }) => {
 	return (
-		<Box sx={{ display: 'flex', direction: 'row', gap: 2, p: 2, justifyContent: 'flex-end' }}>
+		<Box sx={footerContainer}>
 			<Button variant='text' onClick={onClose}>
 				Отмена
 			</Button>

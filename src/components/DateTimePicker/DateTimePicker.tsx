@@ -3,6 +3,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useState } from 'react'
 import { Box } from '@mui/material'
 import styles from './DateTimePicker.module.css'
+import { pickerContainer } from './DateTimePicker.mui'
 
 interface DateTimePickerProps {
 	label?: string
@@ -17,7 +18,7 @@ const CustomDateTimePicker: React.FC<DateTimePickerProps> = ({ label, showTime =
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
-			<Box display={'flex'} gap={2} height={56}>
+			<Box sx={pickerContainer}>
 				{showTime ? (
 					<>
 						{/* Выбор диапазона времени */}

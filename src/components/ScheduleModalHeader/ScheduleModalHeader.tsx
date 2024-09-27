@@ -1,5 +1,6 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { CgClose } from 'react-icons/cg'
+import { headerContainer } from './ScheduleModalHeader.mui'
 
 interface Props {
 	title: string
@@ -8,7 +9,7 @@ interface Props {
 
 const ScheduleModalHeader: React.FC<Props> = ({ title, onClose }) => {
 	return (
-		<Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, borderBottom: '1px solid #606060' }}>
+		<Box sx={headerContainer}>
 			<Typography id='modal-title' variant='h6'>
 				{title}
 			</Typography>

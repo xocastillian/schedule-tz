@@ -1,6 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { dayGroups, daysOfWeek } from './constants'
+import { toggleContainer } from './Weekdays.mui'
 
 const Weekdays = () => {
 	const [selectedDays, setSelectedDays] = useState<string[]>([])
@@ -28,7 +29,7 @@ const Weekdays = () => {
 	)
 
 	return (
-		<ToggleButtonGroup value={selectedDays} aria-label='text formatting' fullWidth style={{ height: '56px' }}>
+		<ToggleButtonGroup value={selectedDays} aria-label='text formatting' fullWidth sx={toggleContainer}>
 			{Object.keys(dayGroups).map(group => (
 				<ToggleButton
 					key={group}
