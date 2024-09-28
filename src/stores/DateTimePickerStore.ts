@@ -3,7 +3,7 @@ import { HourType } from '../types'
 
 class DateTimePickerStore {
 	startDate: Date | null = new Date()
-	endDate: Date | null = null
+	endDate: Date | null = new Date()
 	startTime: Date = new Date()
 	endTime: Date | null = null
 	hourType: HourType = HourType.ACADEMIC

@@ -16,9 +16,8 @@ import {
 	schoolSelectItems,
 } from '../constants'
 import Warning from '../../Warning/ui/Warning'
-import { FC, useCallback } from 'react'
-import { HourType } from '../../../types'
-import { useStores } from '../../../contexts/useStore'
+import { FC } from 'react'
+import { useSchedule } from '../../../features/useSchedule'
 
 interface ScheduleModalProps {
 	open: boolean
@@ -27,91 +26,24 @@ interface ScheduleModalProps {
 
 const ScheduleModal: FC<ScheduleModalProps> = observer(({ open, onClose }) => {
 	const {
-		dateTimePickerStore,
+		handleHourTypeChange,
+		handleBreakTimeChange,
+		handleAddSchedule,
+		handleTotalHoursIncrement,
+		handleTotalHoursDecrement,
+		handleDailyHoursIncrement,
+		handleDailyHoursDecrement,
 		dailyHoursCounter,
 		totalHoursCounter,
-		weekdaysStore,
-		hourTypeSelect,
-		breakTimeSelect,
-		mentorSelect,
-		auditoriumSelect,
 		schoolSelect,
 		groupSelect,
-	} = useStores()
-
-	const handleHourTypeChange = useCallback(
-		(value: string) => {
-			hourTypeSelect.setValue(value)
-			dateTimePickerStore.setHourType(value as HourType)
-			dateTimePickerStore.updateEndTime(dailyHoursCounter.count)
-		},
-		[dateTimePickerStore, hourTypeSelect, dailyHoursCounter]
-	)
-
-	const handleBreakTimeChange = useCallback(
-		(value: string) => {
-			breakTimeSelect.setValue(value)
-			dateTimePickerStore.setBreakTime(value)
-			dailyHoursCounter.updateEndTime()
-		},
-		[dailyHoursCounter, dateTimePickerStore, breakTimeSelect]
-	)
-
-	const handleMentorChange = useCallback(
-		(value: string) => {
-			mentorSelect.setValue(value)
-		},
-		[mentorSelect]
-	)
-
-	const handleAuditoriumChange = useCallback(
-		(value: string) => {
-			auditoriumSelect.setValue(value)
-		},
-		[auditoriumSelect]
-	)
-
-	const handleTotalHoursIncrement = useCallback(() => {
-		totalHoursCounter.increment()
-	}, [totalHoursCounter])
-
-	const handleTotalHoursDecrement = useCallback(() => {
-		if (totalHoursCounter.count > dailyHoursCounter.count) {
-			totalHoursCounter.decrement()
-		}
-	}, [totalHoursCounter, dailyHoursCounter])
-
-	const handleDailyHoursIncrement = useCallback(() => {
-		dailyHoursCounter.increment()
-		if (dailyHoursCounter.count > totalHoursCounter.count) {
-			totalHoursCounter.setCount(dailyHoursCounter.count)
-		}
-		dailyHoursCounter.updateEndTime()
-	}, [dailyHoursCounter, totalHoursCounter])
-
-	const handleDailyHoursDecrement = useCallback(() => {
-		dailyHoursCounter.decrement()
-		dailyHoursCounter.updateEndTime()
-	}, [dailyHoursCounter])
-
-	const handleSchoolChange = useCallback(
-		(value: string) => {
-			schoolSelect.setValue(value)
-		},
-		[schoolSelect]
-	)
-
-	const handleGroupChange = useCallback(
-		(value: string) => {
-			groupSelect.setValue(value)
-		},
-		[groupSelect]
-	)
-
-	const handleAddSchedule = useCallback(() => {
-		console.log('Adding schedule...')
-		onClose()
-	}, [onClose])
+		mentorSelect,
+		auditoriumSelect,
+		hourTypeSelect,
+		breakTimeSelect,
+		dateTimePickerStore,
+		weekdaysStore,
+	} = useSchedule(onClose)
 
 	return (
 		<Modal open={open} onClose={onClose} aria-labelledby='modal-title' aria-describedby='modal-description'>
@@ -120,8 +52,8 @@ const ScheduleModal: FC<ScheduleModalProps> = observer(({ open, onClose }) => {
 
 				<Box sx={content}>
 					<Box sx={selectors}>
-						<SelectItem value={schoolSelect.selectedValue} menuItems={schoolSelectItems} onChange={handleSchoolChange} />
-						<SelectItem value={groupSelect.selectedValue} menuItems={groupSelectItems} onChange={handleGroupChange} />
+						<SelectItem value={schoolSelect.selectedValue} menuItems={schoolSelectItems} onChange={value => schoolSelect.setValue(value)} />
+						<SelectItem value={groupSelect.selectedValue} menuItems={groupSelectItems} onChange={value => groupSelect.setValue(value)} />
 					</Box>
 
 					<Weekdays store={weekdaysStore} />
@@ -153,8 +85,12 @@ const ScheduleModal: FC<ScheduleModalProps> = observer(({ open, onClose }) => {
 					</Box>
 
 					<Box sx={selectors}>
-						<SelectItem value={mentorSelect.selectedValue} menuItems={mentorSelectItems} onChange={handleMentorChange} />
-						<SelectItem value={auditoriumSelect.selectedValue} menuItems={auditoriumSelectItems} onChange={handleAuditoriumChange} />
+						<SelectItem value={mentorSelect.selectedValue} menuItems={mentorSelectItems} onChange={value => mentorSelect.setValue(value)} />
+						<SelectItem
+							value={auditoriumSelect.selectedValue}
+							menuItems={auditoriumSelectItems}
+							onChange={value => auditoriumSelect.setValue(value)}
+						/>
 					</Box>
 
 					<Warning title='Выбор преподавателя и аудитории необязателен' />

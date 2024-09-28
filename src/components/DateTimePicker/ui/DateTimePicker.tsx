@@ -57,14 +57,15 @@ const CustomDateTimePicker: FC<Props> = observer(({ label, showTime = false, sto
 					<>
 						<DatePicker
 							className={styles.picker}
-							label={label && `${label} (начало)`}
+							label={label && `${label} (не успел сделать)`}
 							value={store.startDate}
 							onChange={newValue => store.setStartDate(newValue)}
 							shouldDisableDate={disableFutureDates}
+							disabled
 						/>
 						<DatePicker
 							className={styles.picker}
-							label={label && `${label} (конец)`}
+							label={label && `${label} (не успел сделать)`}
 							value={store.endDate}
 							onChange={newValue => store.setEndDate(newValue)}
 							shouldDisableDate={disableFutureDates}
