@@ -1,4 +1,4 @@
-import { SelectItem } from '../../SelectItem/types'
+import { SelectItem } from '../../../types'
 
 export const hourTypeSelectItems: SelectItem[] = [
 	{ label: 'Академический час', value: 'academic' },
@@ -25,4 +25,18 @@ export const auditoriumSelectItems: SelectItem[] = [
 	{ label: 'Аудитория 1', value: 'auditorium_1' },
 	{ label: 'Аудитория 2', value: 'auditorium_2' },
 	{ label: 'Аудитория 3', value: 'auditorium_3' },
+]
+
+export const schoolSelectItems: SelectItem[] = [
+	{ label: 'Выбор школы', value: 'school_select' },
+	{ label: 'Школа 1', value: 'school_1' },
+	{ label: 'Школа 2', value: 'school_2' },
+	{ label: 'Школа 3', value: 'school_3' },
+]
+
+export const groupSelectItems: SelectItem[] = [
+	{ label: 'Выбор группы', value: 'group_select' },
+	{ label: 'Группа 1', value: 'group_1' },
+	{ label: 'Группа 2', value: 'group_2' },
+	{ label: 'Группа 3', value: 'group_3' },
 ]

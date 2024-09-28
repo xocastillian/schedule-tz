@@ -5,7 +5,8 @@ import { Box } from '@mui/material'
 import styles from './DateTimePicker.module.css'
 import { pickerContainer } from './DateTimePicker.mui'
 import { dateTimePickerStore } from '../../../stores/DateTimePickerStore'
-import { disableFutureDates } from '../utils'
+import { disableFutureDates, getInterval } from '../utils'
+import { HourType } from '../../../types'
 
 interface Props {
 	label?: string
@@ -13,6 +14,21 @@ interface Props {
 }
 
 const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = false }) => {
+	const interval = getInterval(dateTimePickerStore.hourType as HourType, showTime)
+
+	const handleStartTimeChange = (newValue: Date | null) => {
+		if (newValue) {
+			dateTimePickerStore.setStartTime(newValue)
+			dateTimePickerStore.setEndTime(new Date(newValue.getTime() + interval * 60000))
+		}
+	}
+
+	const handleEndTimeChange = (newValue: Date | null) => {
+		if (newValue) {
+			dateTimePickerStore.setEndTime(newValue)
+		}
+	}
+
 	return (
 		<LocalizationProvider dateAdapter={AdapterDateFns}>
 			<Box sx={pickerContainer}>
@@ -23,14 +39,16 @@ const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = fals
 							ampm={false}
 							label={label && `${label} (начало)`}
 							value={dateTimePickerStore.startTime}
-							onChange={newValue => dateTimePickerStore.setStartTime(newValue)}
+							onChange={handleStartTimeChange}
 						/>
 						<TimePicker
 							className={styles.picker}
 							ampm={false}
 							label={label && `${label} (конец)`}
 							value={dateTimePickerStore.endTime}
-							onChange={newValue => dateTimePickerStore.setEndTime(newValue)}
+							onChange={handleEndTimeChange}
+							minTime={new Date(dateTimePickerStore.startTime.getTime() + interval * 60000)}
+							disabled
 						/>
 					</>
 				) : (
