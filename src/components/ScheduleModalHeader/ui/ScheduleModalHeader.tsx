@@ -1,13 +1,14 @@
 import { Box, Typography, IconButton } from '@mui/material'
 import { CgClose } from 'react-icons/cg'
 import { headerContainer } from './ScheduleModalHeader.mui'
+import { FC, memo } from 'react'
 
 interface Props {
 	title: string
 	onClose: () => void
 }
 
-const ScheduleModalHeader: React.FC<Props> = ({ title, onClose }) => {
+const ScheduleModalHeader: FC<Props> = memo(({ title, onClose }) => {
 	return (
 		<Box sx={headerContainer}>
 			<Typography id='modal-title' variant='h6'>
@@ -18,6 +19,6 @@ const ScheduleModalHeader: React.FC<Props> = ({ title, onClose }) => {
 			</IconButton>
 		</Box>
 	)
-}
+})
 
 export default ScheduleModalHeader

@@ -16,83 +16,102 @@ import {
 	schoolSelectItems,
 } from '../constants'
 import Warning from '../../Warning/ui/Warning'
-import HoursCounterStore from '../../../stores/HoursCounterStore'
-import SelectItemStore from '../../../stores/SelectItemStore'
-import { useCallback } from 'react'
-import { dateTimePickerStore } from '../../../stores/DateTimePickerStore'
+import { FC, useCallback } from 'react'
 import { HourType } from '../../../types'
+import { useStores } from '../../../contexts/useStore'
 
 interface ScheduleModalProps {
 	open: boolean
 	onClose: () => void
 }
 
-const dailyHoursCounter = new HoursCounterStore()
-const totalHoursCounter = new HoursCounterStore()
+const ScheduleModal: FC<ScheduleModalProps> = observer(({ open, onClose }) => {
+	const {
+		dateTimePickerStore,
+		dailyHoursCounter,
+		totalHoursCounter,
+		weekdaysStore,
+		hourTypeSelect,
+		breakTimeSelect,
+		mentorSelect,
+		auditoriumSelect,
+		schoolSelect,
+		groupSelect,
+	} = useStores()
 
-const hourTypeSelect = new SelectItemStore('academic')
-const breakTimeSelect = new SelectItemStore('5')
-const auditoriumSelect = new SelectItemStore('auditorium_select')
-const mentorSelect = new SelectItemStore('mentor_select')
-const schoolSelect = new SelectItemStore('school_select')
-const groupSelect = new SelectItemStore('group_select')
+	const handleHourTypeChange = useCallback(
+		(value: string) => {
+			hourTypeSelect.setValue(value)
+			dateTimePickerStore.setHourType(value as HourType)
+			dateTimePickerStore.updateEndTime(dailyHoursCounter.count)
+		},
+		[dateTimePickerStore, hourTypeSelect, dailyHoursCounter]
+	)
 
-const ScheduleModal: React.FC<ScheduleModalProps> = observer(({ open, onClose }) => {
-	const handleHourTypeChange = useCallback((value: string) => {
-		hourTypeSelect.setValue(value)
-		dateTimePickerStore.setHourType(value as HourType)
-		dateTimePickerStore.updateEndTime(dailyHoursCounter.count)
-	}, [])
+	const handleBreakTimeChange = useCallback(
+		(value: string) => {
+			breakTimeSelect.setValue(value)
+			dateTimePickerStore.setBreakTime(value)
+			dailyHoursCounter.updateEndTime()
+		},
+		[dailyHoursCounter, dateTimePickerStore, breakTimeSelect]
+	)
 
-	const handleBreakTimeChange = useCallback((value: string) => {
-		breakTimeSelect.setValue(value)
-		dateTimePickerStore.setBreakTime(value)
-		dailyHoursCounter.updateEndTime()
-	}, [])
+	const handleMentorChange = useCallback(
+		(value: string) => {
+			mentorSelect.setValue(value)
+		},
+		[mentorSelect]
+	)
 
-	const handleMentorChange = useCallback((value: string) => {
-		mentorSelect.setValue(value)
-	}, [])
+	const handleAuditoriumChange = useCallback(
+		(value: string) => {
+			auditoriumSelect.setValue(value)
+		},
+		[auditoriumSelect]
+	)
 
-	const handleAuditoriumChange = useCallback((value: string) => {
-		auditoriumSelect.setValue(value)
-	}, [])
-
-	const handleTotalHoursIncrement = () => {
+	const handleTotalHoursIncrement = useCallback(() => {
 		totalHoursCounter.increment()
-	}
+	}, [totalHoursCounter])
 
-	const handleTotalHoursDecrement = () => {
+	const handleTotalHoursDecrement = useCallback(() => {
 		if (totalHoursCounter.count > dailyHoursCounter.count) {
 			totalHoursCounter.decrement()
 		}
-	}
+	}, [totalHoursCounter, dailyHoursCounter])
 
-	const handleDailyHoursIncrement = () => {
+	const handleDailyHoursIncrement = useCallback(() => {
 		dailyHoursCounter.increment()
 		if (dailyHoursCounter.count > totalHoursCounter.count) {
 			totalHoursCounter.setCount(dailyHoursCounter.count)
 		}
 		dailyHoursCounter.updateEndTime()
-	}
+	}, [dailyHoursCounter, totalHoursCounter])
 
-	const handleDailyHoursDecrement = () => {
+	const handleDailyHoursDecrement = useCallback(() => {
 		dailyHoursCounter.decrement()
 		dailyHoursCounter.updateEndTime()
-	}
+	}, [dailyHoursCounter])
 
-	const handleSchoolChange = useCallback((value: string) => {
-		schoolSelect.setValue(value)
-	}, [])
+	const handleSchoolChange = useCallback(
+		(value: string) => {
+			schoolSelect.setValue(value)
+		},
+		[schoolSelect]
+	)
 
-	const handleGroupChange = useCallback((value: string) => {
-		groupSelect.setValue(value)
-	}, [])
+	const handleGroupChange = useCallback(
+		(value: string) => {
+			groupSelect.setValue(value)
+		},
+		[groupSelect]
+	)
 
-	const handleAddSchedule = () => {
+	const handleAddSchedule = useCallback(() => {
 		console.log('Adding schedule...')
 		onClose()
-	}
+	}, [onClose])
 
 	return (
 		<Modal open={open} onClose={onClose} aria-labelledby='modal-title' aria-describedby='modal-description'>
@@ -105,7 +124,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = observer(({ open, onClose })
 						<SelectItem value={groupSelect.selectedValue} menuItems={groupSelectItems} onChange={handleGroupChange} />
 					</Box>
 
-					<Weekdays />
+					<Weekdays store={weekdaysStore} />
 
 					<Box sx={selectors}>
 						<SelectItem value={hourTypeSelect.selectedValue} menuItems={hourTypeSelectItems} onChange={handleHourTypeChange} />
@@ -129,8 +148,8 @@ const ScheduleModal: React.FC<ScheduleModalProps> = observer(({ open, onClose })
 					</Box>
 
 					<Box sx={pickers}>
-						<CustomDateTimePicker label='Период обучения' />
-						<CustomDateTimePicker label='Время занятий' showTime />
+						<CustomDateTimePicker label='Период обучения' store={dateTimePickerStore} />
+						<CustomDateTimePicker label='Время занятий' showTime store={dateTimePickerStore} />
 					</Box>
 
 					<Box sx={selectors}>

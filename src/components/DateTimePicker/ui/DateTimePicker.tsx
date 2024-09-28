@@ -4,28 +4,30 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Box } from '@mui/material'
 import styles from './DateTimePicker.module.css'
 import { pickerContainer } from './DateTimePicker.mui'
-import { dateTimePickerStore } from '../../../stores/DateTimePickerStore'
-import { disableFutureDates, getInterval } from '../utils'
 import { HourType } from '../../../types'
+import { disableFutureDates, getInterval } from '../utils'
+import DateTimePickerStore from '../../../stores/DateTimePickerStore'
+import { FC } from 'react'
 
 interface Props {
 	label?: string
 	showTime?: boolean
+	store: DateTimePickerStore
 }
 
-const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = false }) => {
-	const interval = getInterval(dateTimePickerStore.hourType as HourType, showTime)
+const CustomDateTimePicker: FC<Props> = observer(({ label, showTime = false, store }) => {
+	const interval = getInterval(store.hourType as HourType, showTime)
 
 	const handleStartTimeChange = (newValue: Date | null) => {
 		if (newValue) {
-			dateTimePickerStore.setStartTime(newValue)
-			dateTimePickerStore.setEndTime(new Date(newValue.getTime() + interval * 60000))
+			store.setStartTime(newValue)
+			store.setEndTime(new Date(newValue.getTime() + interval * 60000))
 		}
 	}
 
 	const handleEndTimeChange = (newValue: Date | null) => {
 		if (newValue) {
-			dateTimePickerStore.setEndTime(newValue)
+			store.setEndTime(newValue)
 		}
 	}
 
@@ -38,16 +40,16 @@ const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = fals
 							className={styles.picker}
 							ampm={false}
 							label={label && `${label} (начало)`}
-							value={dateTimePickerStore.startTime}
+							value={store.startTime}
 							onChange={handleStartTimeChange}
 						/>
 						<TimePicker
 							className={styles.picker}
 							ampm={false}
 							label={label && `${label} (конец)`}
-							value={dateTimePickerStore.endTime}
+							value={store.endTime}
 							onChange={handleEndTimeChange}
-							minTime={new Date(dateTimePickerStore.startTime.getTime() + interval * 60000)}
+							minTime={new Date(store.startTime.getTime() + interval * 60000)}
 							disabled
 						/>
 					</>
@@ -56,16 +58,17 @@ const CustomDateTimePicker: React.FC<Props> = observer(({ label, showTime = fals
 						<DatePicker
 							className={styles.picker}
 							label={label && `${label} (начало)`}
-							value={dateTimePickerStore.startDate}
-							onChange={newValue => dateTimePickerStore.setStartDate(newValue)}
+							value={store.startDate}
+							onChange={newValue => store.setStartDate(newValue)}
 							shouldDisableDate={disableFutureDates}
 						/>
 						<DatePicker
 							className={styles.picker}
 							label={label && `${label} (конец)`}
-							value={dateTimePickerStore.endDate}
-							onChange={newValue => dateTimePickerStore.setEndDate(newValue)}
+							value={store.endDate}
+							onChange={newValue => store.setEndDate(newValue)}
 							shouldDisableDate={disableFutureDates}
+							disabled
 						/>
 					</>
 				)}

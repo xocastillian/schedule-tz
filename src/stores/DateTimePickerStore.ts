@@ -53,4 +53,4 @@ class DateTimePickerStore {
 	}
 }
 
-export const dateTimePickerStore = new DateTimePickerStore()
+export default DateTimePickerStore

@@ -4,22 +4,26 @@ import WeekdaysStore from '../../../stores/WeekdaysStore'
 import { dayGroups, daysOfWeek } from '../constants/constants'
 import { toggleContainer } from './Weekdays.mui'
 
-const Weekdays = observer(() => {
+interface WeekdaysProps {
+	store: WeekdaysStore
+}
+
+const Weekdays: React.FC<WeekdaysProps> = observer(({ store }) => {
 	const handleGroupSelection = (group: keyof typeof dayGroups) => {
-		WeekdaysStore.handleGroupSelection(group)
+		store.handleGroupSelection(group)
 	}
 
 	const handleDayToggle = (day: string) => {
-		WeekdaysStore.handleDayToggle(day)
+		store.handleDayToggle(day)
 	}
 
 	return (
-		<ToggleButtonGroup value={WeekdaysStore.selectedDays} aria-label='text formatting' fullWidth sx={toggleContainer}>
+		<ToggleButtonGroup value={store.selectedDays} aria-label='text formatting' fullWidth sx={toggleContainer}>
 			{Object.keys(dayGroups).map(group => (
 				<ToggleButton
 					key={group}
 					value={group}
-					selected={WeekdaysStore.isGroupActive(group as keyof typeof dayGroups)}
+					selected={store.isGroupActive(group as keyof typeof dayGroups)}
 					onClick={() => handleGroupSelection(group as keyof typeof dayGroups)}
 					aria-label={group}
 					color='primary'
@@ -32,7 +36,7 @@ const Weekdays = observer(() => {
 				<ToggleButton
 					key={day}
 					value={day}
-					selected={WeekdaysStore.selectedDays.includes(day)}
+					selected={store.selectedDays.includes(day)}
 					onClick={() => handleDayToggle(day)}
 					aria-label={day}
 					color='primary'

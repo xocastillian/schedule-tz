@@ -1,11 +1,13 @@
 import { makeAutoObservable } from 'mobx'
 import { HourType } from '../types'
-import { dateTimePickerStore } from './DateTimePickerStore'
+import DateTimePickerStore from './DateTimePickerStore'
 
 class HoursCounterStore {
 	count = 1
+	dateTimePickerStore: DateTimePickerStore
 
-	constructor() {
+	constructor(dateTimePickerStore: DateTimePickerStore) {
+		this.dateTimePickerStore = dateTimePickerStore
 		makeAutoObservable(this)
 	}
 
@@ -24,14 +26,14 @@ class HoursCounterStore {
 	}
 
 	updateEndTime() {
-		const hourType = dateTimePickerStore.hourType
+		const hourType = this.dateTimePickerStore.hourType
 		const interval = hourType === HourType.ACADEMIC ? 45 : 60
 		const totalMinutes = this.count * interval
 
-		const breakTime = parseInt(dateTimePickerStore.breakTime, 10) || 0
+		const breakTime = parseInt(this.dateTimePickerStore.breakTime, 10) || 0
 		const totalBreakTime = (this.count - 1) * breakTime
 
-		dateTimePickerStore.endTime = new Date(dateTimePickerStore.startTime.getTime() + (totalMinutes + totalBreakTime) * 60000)
+		this.dateTimePickerStore.endTime = new Date(this.dateTimePickerStore.startTime.getTime() + (totalMinutes + totalBreakTime) * 60000)
 	}
 }
 

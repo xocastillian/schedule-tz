@@ -26,4 +26,4 @@ class WeekdaysStore {
 	}
 }
 
-export default new WeekdaysStore()
+export default WeekdaysStore
