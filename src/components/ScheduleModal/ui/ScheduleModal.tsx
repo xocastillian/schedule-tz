@@ -63,15 +63,22 @@ const ScheduleModal: React.FC<ScheduleModalProps> = observer(({ open, onClose })
 	}
 
 	const handleTotalHoursDecrement = () => {
-		totalHoursCounter.decrement()
+		if (totalHoursCounter.count > dailyHoursCounter.count) {
+			totalHoursCounter.decrement()
+		}
 	}
 
 	const handleDailyHoursIncrement = () => {
 		dailyHoursCounter.increment()
+		if (dailyHoursCounter.count > totalHoursCounter.count) {
+			totalHoursCounter.setCount(dailyHoursCounter.count)
+		}
+		dailyHoursCounter.updateEndTime()
 	}
 
 	const handleDailyHoursDecrement = () => {
 		dailyHoursCounter.decrement()
+		dailyHoursCounter.updateEndTime()
 	}
 
 	const handleSchoolChange = useCallback((value: string) => {
@@ -111,6 +118,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = observer(({ open, onClose })
 							count={totalHoursCounter.count}
 							increment={handleTotalHoursIncrement}
 							decrement={handleTotalHoursDecrement}
+							disableDecrement={totalHoursCounter.count <= dailyHoursCounter.count}
 						/>
 						<HoursCounter
 							title='Часов в день'

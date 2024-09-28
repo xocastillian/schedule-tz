@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
-import { dateTimePickerStore } from './DateTimePickerStore'
 import { HourType } from '../types'
+import { dateTimePickerStore } from './DateTimePickerStore'
 
 class HoursCounterStore {
 	count = 1
@@ -11,14 +11,16 @@ class HoursCounterStore {
 
 	increment = () => {
 		this.count += 1
-		this.updateEndTime()
 	}
 
 	decrement = () => {
 		if (this.count > 1) {
 			this.count -= 1
-			this.updateEndTime()
 		}
+	}
+
+	setCount = (value: number) => {
+		this.count = value
 	}
 
 	updateEndTime() {
